@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useQueries, useQuery } from "react-query";
 import {
   Link,
   Outlet,
@@ -7,6 +8,7 @@ import {
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
+import { fetchCoinInfo, fetchCoinTickers } from "./api";
 const Container = styled.div`
   padding: 0px 20px;
   margin: 0 auto;
@@ -128,27 +130,36 @@ interface PriceData {
   };
 }
 const Coin = () => {
-  const [loading, setLoading] = useState(true);
-  const [info, setInfo] = useState<InfoData>();
-  const [priceInfo, setPriceInfo] = useState<PriceData>();
+  // const [loading, setLoading] = useState(true);
+  // const [info, setInfo] = useState<InfoData>();
+  // const [priceInfo, setPriceInfo] = useState<PriceData>();
   const { coinId } = useParams<{ coinId: string }>();
   const location = useLocation();
   const state = location.state as RouteState;
   const priceMatch = useMatch("/:coinId/price");
   const chartMatch = useMatch("/:coinId/chart");
-  useEffect(() => {
-    (async () => {
-      const infoData = await (
-        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      ).json();
-      const priceData = await (
-        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      ).json();
-      setInfo(infoData);
-      setPriceInfo(priceData);
-      setLoading(false);
-    })();
-  }, [coinId]);
+  // useEffect(() => {
+  //   (async () => {
+  //     const infoData = await (
+  //       await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+  //     ).json();
+  //     const priceData = await (
+  //       await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+  //     ).json();
+  //     setInfo(infoData);
+  //     setPriceInfo(priceData);
+  //     setLoading(false);
+  //   })();
+  // }, [coinId]);
+  const { isLoading: infoLoading, data: info } = useQuery<InfoData>({
+    queryKey: ["info"],
+    queryFn: () => fetchCoinInfo(coinId!),
+  });
+  const { isLoading: priceLoading, data: price } = useQuery<PriceData>({
+    queryKey: ["price"],
+    queryFn: () => fetchCoinTickers(coinId!),
+  });
+  const loading = infoLoading || priceLoading;
   return (
     <Container>
       <Header>
@@ -178,11 +189,11 @@ const Coin = () => {
           <Overview>
             <OverviewItem>
               <span>Total Suply:</span>
-              <span>{priceInfo?.total_supply}</span>
+              <span>{price?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Max Supply:</span>
-              <span>{priceInfo?.max_supply}</span>
+              <span>{price?.max_supply}</span>
             </OverviewItem>
           </Overview>
           <Tabs>

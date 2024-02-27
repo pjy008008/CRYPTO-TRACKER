@@ -5,4 +5,3 @@
 - Route States(Learn how to send the information to other page)
 
 # ReactQuery
-

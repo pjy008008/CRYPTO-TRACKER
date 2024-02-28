@@ -1,8 +1,8 @@
 import { ThemeProvider, createGlobalStyle } from "styled-components";
-import { theme } from "./theme";
+import { darktheme, lighttheme } from "./theme";
 import { RouterProvider } from "react-router-dom";
 import router from "./routes/Router";
-
+import { useState } from "react";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -68,8 +68,11 @@ a{
 `;
 
 const App = () => {
+  const [darkmode, setDarkmode] = useState(true);
+
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={darkmode ? darktheme : lighttheme}>
+      <button onClick={() => setDarkmode((prev) => !prev)}>mode changer</button>
       <GlobalStyle />
       <RouterProvider router={router} />
     </ThemeProvider>

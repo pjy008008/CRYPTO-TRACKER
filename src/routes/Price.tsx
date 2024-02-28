@@ -44,7 +44,7 @@ const BigTab = styled.div`
   display: flex;
   justify-content: space-between;
   text-align: left;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.ContainerBgColor};
   border-radius: 10px;
   padding: 15px 20px;
 `;
@@ -60,7 +60,7 @@ const Tab = styled.span`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.ContainerBgColor};
   padding: 7px 0px;
   border-radius: 10px;
 `;

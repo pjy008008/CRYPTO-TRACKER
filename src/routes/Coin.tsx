@@ -9,6 +9,8 @@ import {
 } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "./api";
+import { Helmet } from "react-helmet";
+
 const Container = styled.div`
   padding: 0px 20px;
   margin: 0 auto;
@@ -26,6 +28,7 @@ const Loader = styled.div`
 `;
 const Title = styled.h1`
   font-size: 48px;
+  padding-right: 30px;
   color: ${(props) => props.theme.accentColor};
 `;
 const Overview = styled.div`
@@ -162,7 +165,26 @@ const Coin = () => {
   const loading = infoLoading || priceLoading;
   return (
     <Container>
+      <Helmet>
+        <title>
+          {state?.name ? state.name : loading ? "Loading" : info?.name}
+        </title>
+      </Helmet>
       <Header>
+        <Link to="/">
+          <span
+            style={{
+              position: "relative",
+              fontSize: "30px",
+              right: "120px",
+              top: "5px",
+              color: "#9c88ff",
+            }}
+            className="material-symbols-outlined"
+          >
+            arrow_back
+          </span>
+        </Link>
         <Title>
           {state?.name ? state.name : loading ? "Loading" : info?.name}
         </Title>
@@ -204,7 +226,7 @@ const Coin = () => {
               <Link to="price">Price</Link>
             </Tab>
           </Tabs>
-          <Outlet />
+          <Outlet context={{ coinId: coinId }} />
         </>
       )}
     </Container>

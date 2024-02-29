@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "./api";
 import { Helmet } from "react-helmet";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -19,7 +21,7 @@ const Header = styled.header`
 const CoinsList = styled.ul``;
 const Coin = styled.li`
   background-color: white;
-  color: ${(props) => props.theme.textColor};
+  color: ${(props) => props.theme.coinListColor};
   margin-bottom: 10px;
   border-radius: 15px;
   a {
@@ -47,6 +49,17 @@ const Img = styled.img`
   height: 35px;
   margin-right: 10px;
 `;
+const ThemeToggleBtn = styled.button`
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  color: ${(props) => props.theme.toggleBtnColor};
+  background-color: white;
+  border-radius: 50%;
+  border: none;
+`;
 interface InterfaceCoin {
   id: string;
   name: string;
@@ -56,59 +69,31 @@ interface InterfaceCoin {
   is_active: boolean;
   type: string;
 }
-// const coins = [
-//   {
-//     id: "btc-bitcoin",
-//     name: "Bitcoin",
-//     symbol: "BTC",
-//     rank: 1,
-//     is_new: false,
-//     is_active: true,
-//     type: "coin",
-//   },
-//   {
-//     id: "eth-ethereum",
-//     name: "Ethereum",
-//     symbol: "ETH",
-//     rank: 2,
-//     is_new: false,
-//     is_active: true,
-//     type: "coin",
-//   },
-//   {
-//     id: "hex-hex",
-//     name: "HEX",
-//     symbol: "HEX",
-//     rank: 3,
-//     is_new: false,
-//     is_active: true,
-//     type: "token",
-//   },
-// ];
-// const apiUrl = "https://api.coinpaprika.com/v1/coins"
+
 // const endpoint = "https://api.coinpaprika.com/v1/coins";
 const Coins = () => {
-  // const [coins, setCoins] = useState<CoinInterface[]>([]);
-  // const [loading, setLoading] = useState(false);
-  // useEffect(() => {
-  //   (async () => {
-  //     const response = await fetch("https://api.coinpaprika.com/v1/coins");
-  //     const data = await response.json();
-  //     setCoins(data.slice(0, 100));
-  //     setLoading(false);
-  //   })();
-  // }, []);
+  const isDark = useRecoilValue(isDarkAtom);
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   const { isLoading, data } = useQuery<InterfaceCoin[]>({
     queryKey: ["allCoins"],
     queryFn: fetchCoins,
   });
   return (
     <Container>
+      <ThemeToggleBtn
+        className={
+          isDark ? "material-symbols-outlined" : "material-symbols-outlined"
+        }
+        onClick={toggleDarkAtom}
+      >
+        {isDark ? "light_mode" : "dark_mode"}
+      </ThemeToggleBtn>
       <Helmet>
-        <title>코인</title>
+        <title>CRYPTO-CURRENCY</title>
       </Helmet>
       <Header>
-        <Title>코인</Title>
+        <Title>CRYPTO-CURRENCY</Title>
       </Header>
       {isLoading ? (
         <Loader>{"Loading..."}</Loader>

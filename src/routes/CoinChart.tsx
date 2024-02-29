@@ -2,6 +2,8 @@ import { useQueries, useQuery } from "react-query";
 import { useOutletContext } from "react-router-dom";
 import { fecthCoinHistory } from "./api";
 import ReactApexChart from "react-apexcharts";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 interface IChartContext {
   coinId: string;
@@ -23,6 +25,7 @@ const CoinChart = () => {
     queryFn: () => fecthCoinHistory(coinId),
     refetchInterval: 5000,
   });
+  const isDark = useRecoilValue(isDarkAtom);
   console.log(data);
   return (
     <div>
@@ -38,7 +41,7 @@ const CoinChart = () => {
             },
           ]}
           options={{
-            theme: { mode: "dark" },
+            theme: { mode: isDark ? "dark" : "light" },
             chart: {
               height: 300,
               width: 500,

@@ -2,7 +2,9 @@ import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { darktheme, lighttheme } from "./theme";
 import { RouterProvider } from "react-router-dom";
 import router from "./routes/Router";
-import { useState } from "react";
+
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "./atoms";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -68,11 +70,9 @@ a{
 `;
 
 const App = () => {
-  const [darkmode, setDarkmode] = useState(true);
-
+  const isDark = useRecoilValue(isDarkAtom);
   return (
-    <ThemeProvider theme={darkmode ? darktheme : lighttheme}>
-      <button onClick={() => setDarkmode((prev) => !prev)}>mode changer</button>
+    <ThemeProvider theme={isDark ? darktheme : lighttheme}>
       <GlobalStyle />
       <RouterProvider router={router} />
     </ThemeProvider>

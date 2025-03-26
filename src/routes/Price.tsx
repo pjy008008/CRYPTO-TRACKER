@@ -49,6 +49,7 @@ const BigTab = styled.div`
   padding: 15px 20px;
 `;
 const Tabs = styled.div`
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   margin: 25px 0px;
@@ -56,6 +57,7 @@ const Tabs = styled.div`
 `;
 
 const Tab = styled.span`
+  width: 100%;
   text-align: center;
   text-transform: uppercase;
   font-size: 12px;

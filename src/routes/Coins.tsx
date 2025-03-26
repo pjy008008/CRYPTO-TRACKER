@@ -90,10 +90,10 @@ const Coins = () => {
         {isDark ? "light_mode" : "dark_mode"}
       </ThemeToggleBtn>
       <Helmet>
-        <title>CRYPTO-CURRENCY</title>
+        <title>CRYPTO</title>
       </Helmet>
       <Header>
-        <Title>CRYPTO-CURRENCY</Title>
+        <Title>CRYPTO</Title>
       </Header>
       {isLoading ? (
         <Loader>{"Loading..."}</Loader>
